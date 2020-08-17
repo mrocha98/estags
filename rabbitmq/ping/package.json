@@ -1,0 +1,14 @@
+{
+  "name": "ping",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ping.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.6.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {}
+}
