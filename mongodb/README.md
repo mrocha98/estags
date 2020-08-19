@@ -37,9 +37,18 @@ db.solarSystem.aggregate([{
 
 Neste exemplo, temos dois stages, $match e $project.
 
-#### $project
-
 #### $match
+
+![ilustração comparando o funcionamento do $match com um brinquedo de encaixar formatos geométricos](../.github/images/match-example.png)
+
+Consiste em filtrar as collections conforme as condições fornecidas.
+
+- Deve ser um dos primeiros stages
+- Pode conter um $text operator, contanto que que seja o primeiro stage
+- Não pode utilizar $where
+- Usa da mesma syntax do find
+
+#### $project
 
 #### $group
 
