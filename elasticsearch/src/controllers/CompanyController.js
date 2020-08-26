@@ -1,26 +1,23 @@
-const { v4: generateUuid } = require('uuid')
+const CompanyModel = require('../models/Company')
 const faker = require('faker')
-const { client: elasticClient, indices } = require('../db/elasticsearch')
 
 class CompanyController {
   async store(req, res) {
-    const company = {
-      id: generateUuid(),
+    const mockCompany = {
       name: faker.company.companyName(),
       slogan: faker.company.bs(),
       origin: faker.address.country(),
       phone: faker.phone.phoneNumber()
     }
-    console.log(company)
 
     try {
-      await elasticClient.index({
-        index: indices.company,
-        body: company,
-        refresh: true
-      })
+      const company = await CompanyModel.findOne({ name: mockCompany.name })
 
-      return res.sendStatus(201)
+      if (company) return res.status(400).json({ error: 'This company name is already in use' })
+
+      await CompanyModel.create(mockCompany)
+
+      return res.status(201).json(mockCompany)
     } catch (err) {
       return res.status(500).json(err)
     }
@@ -32,17 +29,13 @@ class CompanyController {
     if (!text) return res.status(400).json({ error: 'missing text to search' })
 
     try {
-      const { body: result } = await elasticClient.search({
-        index: indices.company,
-        body: {
+      CompanyModel.search({
+        query_string: {
           query: {
-            match: {
-              slogan: text
-            }
+            // TODO
           }
         }
       })
-      return res.json(result.hits)
     } catch (err) {
       return res.status(500).json(err)
     }
